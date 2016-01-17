@@ -1,0 +1,17 @@
+{
+ "intents": [
+   {
+     "intent": "StatFinderIntent",
+     "slots": [
+       {
+         "name": "Country",
+         "type": "LIST_OF_COLORS"
+       },
+       {
+         "name": "Stat",
+         "type": "LIST_OF_STATS"
+       }
+     ]
+   }
+ ]
+}

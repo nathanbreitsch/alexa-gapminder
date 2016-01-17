@@ -1,0 +1,3 @@
+StatFinderIntent what is the {Stat} of {Country}
+StatFinderIntent what is the {Stat} in {Country}
+StatFinderIntent what is {Country} {Stat}
