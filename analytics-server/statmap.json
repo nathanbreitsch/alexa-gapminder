@@ -4,6 +4,8 @@
   "FEMALE BMI": "BMI_Female",
   "MALE BMI": "BMI_Male",
   "FEMALE BLOOD PRESSURE": "female_blood_pressure",
+  "MALE BLOOD PRESSURE": "female_blood_pressure",
   "GDP PER CAPITA": "gdp_per_capita",
-  "EIGHTH GRADE MATH ACHIEVEMENT": "math_8th_grade"
+  "EIGHTH GRADE MATH ACHIEVEMENT": "math_8th_grade",
+  "FOURTH GRADE MATH ACHIEVEMENT": "math_4th_grade"
 }

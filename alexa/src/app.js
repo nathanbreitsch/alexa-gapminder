@@ -1,3 +1,4 @@
+var request = require('request');
 
 exports.handler = function (event, context) {
     try {
@@ -89,11 +90,10 @@ function getWelcomeResponse(callback) {
     var sessionAttributes = {};
     var cardTitle = "Welcome";
     var speechOutput = "Welcome to the Gap Minder interface for Alexa" +
-        "Ask me for a gapminder statistic for a country";
+        "Ask me for a relationships between global development statistics.";
     // If the user either does not reply to the welcome message or says something that is not
     // understood, they will be prompted again with this text.
-    var repromptText = "Ask me for a gapminder statistic for a country." +
-        "For example: what is the GDP of Canada?";
+    var repromptText = "For example: ask me if there is a relationship between gdp and 8th grade math achievement";
     var shouldEndSession = false;
 
     callback(sessionAttributes,
@@ -112,19 +112,23 @@ function findStat(intent, session, callback){
   var quit = false;
 
   if(stat && country){
-    speechOutput = "You just asked me for the " + stat + " of " + country +
-      " ,but I don't have the gap minder dataset yet.  Get to work you lazy fuck! ";
-    title = stat + " for " + country;
+    speechOutput = "I don't understand what the fuck you just said.";
+    title = "WTF?";
+    callback(
+      sessionAttributes,
+      buildSpeechletResponse(title, speechOutput, reprompt, quit)
+    );
   }
   else{
     speechOutput = "I don't understand what the fuck you just said.";
-    title = "WTF?"
+    title = "WTF?";
+    callback(
+      sessionAttributes,
+      buildSpeechletResponse(title, speechOutput, reprompt, quit)
+    );
   }
 
-  callback(
-    sessionAttributes,
-    buildSpeechletResponse(title, speechOutput, reprompt, quit)
-  );
+
 }
 
 
@@ -133,24 +137,49 @@ function findRelationship(intent, session, callback){
   var stat2 = intent.slots.SecondStat.value;
   var sessionAttributes = {};
   var reprompt = "";
-  var speechOuput = "";
+  var speechOutput = "";
   var title = "";
   var quit = false;
 
   if(stat1 && stat2){
-    speechOutput = "You just asked me for the relationship between " + stat1 + " and " + stat2 +
-      " ,but I don't have the gap minder dataset yet.  Get to work you lazy fuck! ";
-    title = "Relationship between " + stat1 + " and " + stat2;
+    var options = {
+      uri: 'http://45.79.180.157:3000/question',
+      method: 'POST',
+      json: {
+        question: {
+          type: 'relationship',
+          stat1: stat1,
+          stat2: stat2
+        }
+      }
+    };
+
+    request(options, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log(body.id) // Print the shortened url.
+        speechOutput = "I will send you a scatter plot depicting the relationship between " + stat1 + " and " + stat2 + ".";
+        title = "WTF?"
+      }
+      else {
+        speechOutput = "there was a problem handling your request.";
+        title = "WTF?"
+      }
+      callback(
+        sessionAttributes,
+        buildSpeechletResponse(title, speechOutput, reprompt, quit)
+      );
+    });
   }
   else{
     speechOutput = "I don't understand what the fuck you just said.";
     title = "WTF?"
+    callback(
+      sessionAttributes,
+      buildSpeechletResponse(title, speechOutput, reprompt, quit)
+    );
   }
 
-  callback(
-    sessionAttributes,
-    buildSpeechletResponse(title, speechOutput, reprompt, quit)
-  );
+
 }
 
 
