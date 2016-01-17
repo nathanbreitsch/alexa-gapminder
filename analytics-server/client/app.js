@@ -11,8 +11,8 @@ $(function(){
         data: {
           question: {
             type: 'relationship',
-            stat1: 'ALCOHOL CONSUMPTION',
-            stat2: 'EIGHTH GRADE MATH ACHIEVEMENT'
+            stat1: 'ALCOHOL CONSUMPTION booze',
+            stat2: 'EIGHTH GRADE MATH '
           }
         }
       })

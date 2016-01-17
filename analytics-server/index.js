@@ -5,6 +5,7 @@ var data = require('./data/json/countries.json');
 var serveStatic = require('serve-static')
 
 var analytics = require('./analytics.js');
+var resolver = require('./resolveStat.js');
 
 var dc = new analytics.DataContext(data);
 //needed to support post requests
@@ -61,12 +62,14 @@ app.post('/question', function(req, res){
   ++version;
 
   if(req.body.question.type == 'relationship'){
+    var real_stat_1 = resolver.resolveStat(req.body.question.stat1.toUpperCase());
+    var real_stat_2 = resolver.resolveStat(req.body.question.stat2.toUpperCase());
     message = {
       type: 'relationship',
-      data: dc.getScatterData(req.body.question.stat1, req.body.question.stat2),
-      stat1: req.body.question.stat1,
-      stat2: req.body.question.stat2,
-      title: req.body.question.stat1 + ' v.s. ' + req.body.question.stat2
+      data: dc.getScatterData(real_stat_1, real_stat_2),
+      stat1: real_stat_1,
+      stat2: real_stat_2,
+      title: real_stat_1+ ' v.s. ' + real_stat_2
     };
   }
   res.json({});
