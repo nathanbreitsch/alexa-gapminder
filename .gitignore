@@ -1,4 +1,5 @@
 analytics-server/node_modules
 analytics-server/client/bower_components
-analytics-server/data
+analytics-server/data/excel
+analytics-server/data/csv
 .DS_Store
