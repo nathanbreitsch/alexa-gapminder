@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express();
 var data = require('./data/json/countries.json');
-var serveStatic = require('serve-static')
+var serveStatic = require('serve-static');
 
 var analytics = require('./analytics.js');
 var resolver = require('./resolveStat.js');
@@ -38,6 +38,10 @@ app.get('/bower_components/highcharts/highcharts.js', function (req, res) {
   res.sendFile('client/bower_components/highcharts/highcharts.js', { root: __dirname })
 });
 
+app.get('/bower_components/highcharts/highmaps.js', function (req, res) {
+  res.sendFile('client/bower_components/highcharts/highmaps.js', { root: __dirname })
+});
+
 app.get('/app.js', function (req, res) {
   res.sendFile('client/app.js', { root: __dirname })
 });
@@ -62,14 +66,30 @@ app.post('/question', function(req, res){
   ++version;
 
   if(req.body.question.type == 'relationship'){
-    var real_stat_1 = resolver.resolveStat(req.body.question.stat1.toUpperCase());
-    var real_stat_2 = resolver.resolveStat(req.body.question.stat2.toUpperCase());
+    try{
+      var real_stat_1 = resolver.resolveStat(req.body.question.stat1.toUpperCase());
+      var real_stat_2 = resolver.resolveStat(req.body.question.stat2.toUpperCase());
+      message = {
+        type: 'relationship',
+        data: dc.getScatterData(real_stat_1, real_stat_2),
+        stat1: real_stat_1,
+        stat2: real_stat_2,
+        title: real_stat_1+ ' v.s. ' + real_stat_2
+      };
+    }
+    catch(err){
+      message = {type: err.message};
+    }
+
+
+  }
+  else if(req.body.question.type == 'top'){
+    var real_stat = resolver.resolveStat(req.body.question.stat.toUpperCase());
     message = {
-      type: 'relationship',
-      data: dc.getScatterData(real_stat_1, real_stat_2),
-      stat1: real_stat_1,
-      stat2: real_stat_2,
-      title: real_stat_1+ ' v.s. ' + real_stat_2
+      type: 'top',
+      data: dc.getTop10(real_stat),
+      stat: real_stat,
+      title: real_stat
     };
   }
   res.json({});

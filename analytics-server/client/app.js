@@ -10,9 +10,8 @@ $(function(){
         method: 'post',
         data: {
           question: {
-            type: 'relationship',
-            stat1: 'ALCOHOL CONSUMPTION booze',
-            stat2: 'EIGHTH GRADE MATH '
+            type: 'top',
+            stat: 'ALCOHOL CONSUMPTION booze'
           }
         }
       })
@@ -48,6 +47,9 @@ $(function(){
     self.renderVisualization = function(visualization){
       if(visualization.type == 'relationship'){
         self.makeScatter(visualization);
+      }
+      else if(visualization.type == 'top'){
+        self.makeTop(visualization);
       }
     };
 
@@ -113,6 +115,56 @@ $(function(){
         }]
     });
     }
+
+    self.makeTop = function(visualization){
+      $('#content').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: visualization.title + " Leaderboard",
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: visualization.title
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: visualization.title
+        },
+        series: [{
+            name: visualization.title,
+            data: visualization.data,
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:.1f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+    });
+    };
+
 
     setInterval(self.update, 2000);
   }

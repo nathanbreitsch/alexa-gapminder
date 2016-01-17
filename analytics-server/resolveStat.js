@@ -1,4 +1,6 @@
-
+String.prototype.includes = function(other){
+  return (this.indexOf(other) > -1);
+}
 
 var phrases = {
   alcohol_consumption_per_adult: [

@@ -139,7 +139,7 @@ function findRelationship(intent, session, callback){
   var reprompt = "";
   var speechOutput = "";
   var title = "";
-  var quit = false;
+  var quit = true;
 
   if(stat1 && stat2){
     var options = {
