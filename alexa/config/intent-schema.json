@@ -12,6 +12,19 @@
          "type": "LIST_OF_STATS"
        }
      ]
+   },
+   {
+     "intent": "RelationshipFinderIntent",
+     "slots": [
+       {
+         "name": "Stat1",
+         "type": "LIST_OF_STATS"
+       },
+       {
+         "name": "Stat2",
+         "type": "LIST_OF_STATS"
+       }
+     ]
    }
  ]
 }
