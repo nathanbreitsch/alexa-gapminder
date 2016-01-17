@@ -15,6 +15,7 @@
     "flightplan": "^0.6.9",
     "node-inspector": "^0.12.5",
     "nodemon": "^1.8.1",
+    "serve-static": "^1.10.1",
     "socket.io": "^1.4.4"
   },
   "devDependencies": {
