@@ -25,13 +25,35 @@ app.post('/update', function(req, res){
   if(req.body.version < version){
     res.json({
       version: version,
-      message: "penis"
+      visualization: {
+        type: 'scatter',
+        data: [
+          {
+            x: 1,
+            y: 1
+          },
+          {
+            x: 1,
+            y: 2
+          },
+          {
+            x: 2,
+            y: 5
+          },
+          {
+            x: 2,
+            y: 3
+          }
+        ]
+      }
     });
   }
   else{
     res.json(req.body)
   }
 });
+
+
 
 
 app.listen(3000, function () {
