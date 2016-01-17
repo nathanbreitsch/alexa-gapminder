@@ -92,7 +92,12 @@ app.post('/question', function(req, res){
       title: real_stat
     };
   }
-  res.json({});
+  var topCountry = "i d k my b f f jill";
+  if (message && message.data && message.data[0] && message.data[0][1]){
+    topCountry = message.data[0][1];
+  }
+
+  res.json({top: topCountry});
 
 });
 

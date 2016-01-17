@@ -5,7 +5,7 @@
      "slots": [
        {
          "name": "Country",
-         "type": "LIST_OF_COLORS"
+         "type": "LIST_OF_COUNTRIES"
        },
        {
          "name": "Stat",
@@ -22,6 +22,15 @@
        },
        {
          "name": "Stat2",
+         "type": "LIST_OF_STATS"
+       }
+     ]
+   },
+   {
+     "intent": "TopTen",
+     "slots": [
+       {
+         "name": "Stat",
          "type": "LIST_OF_STATS"
        }
      ]

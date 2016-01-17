@@ -68,6 +68,9 @@ function onIntent(intentRequest, session, callback) {
     else if ("AMAZON.HelpIntent" === intentName) {
         getWelcomeResponse(callback);
     }
+    else if("TopTen" == intentName){
+      getTop10(intent, session, callback);
+    }
     else {
         throw "Invalid intent";
     }
@@ -89,7 +92,7 @@ function getWelcomeResponse(callback) {
     // If we wanted to initialize the session to have some attributes we could add those here.
     var sessionAttributes = {};
     var cardTitle = "Welcome";
-    var speechOutput = "Welcome to the Gap Minder interface for Alexa" +
+    var speechOutput = "Welcome to the Gap Minder interface for Alexa. " +
         "Ask me for a relationships between global development statistics.";
     // If the user either does not reply to the welcome message or says something that is not
     // understood, they will be prompted again with this text.
@@ -109,7 +112,7 @@ function findStat(intent, session, callback){
   var title = "";
   var speechOuput = "";
   var reprompt = "What's next?";
-  var quit = false;
+  var quit = true;
 
   if(stat && country){
     speechOutput = "I don't understand what the fuck you just said.";
@@ -129,6 +132,54 @@ function findStat(intent, session, callback){
   }
 
 
+}
+
+
+function getTop10(intent, session, callback){
+  var stat = intent.slots.Stat.value;
+  var sessionAttributes = {};
+  var reprompt = "";
+  var speechOutput = "";
+  var title = "";
+  var quit = true;
+
+  if(stat){
+    var options = {
+      uri: 'http://45.79.180.157:3000/question',
+      method: 'POST',
+      json: {
+        question: {
+          type: 'top',
+          stat: stat
+        }
+      }
+    };
+
+    request(options, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log(body.id) // Print the shortened url.
+        speechOutput = "The country with the highest " + stat + " is " + body.top;
+        title = "WTF?"
+      }
+      else {
+        speechOutput = "there was a problem handling your request.";
+        title = "WTF?"
+      }
+      callback(
+        sessionAttributes,
+        buildSpeechletResponse(title, speechOutput, reprompt, quit)
+      );
+    });
+
+  }
+  else{
+    speechOutput = "I did not understand your question.";
+    title = "WTF?"
+    callback(
+      sessionAttributes,
+      buildSpeechletResponse(title, speechOutput, reprompt, quit)
+    );
+  }
 }
 
 
