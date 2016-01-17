@@ -11,8 +11,8 @@ $(function(){
         data: {
           question: {
             type: 'relationship',
-            stat1: 'GDP',
-            stat2: 'Infant Mortality Rate'
+            stat1: 'ALCOHOL CONSUMPTION',
+            stat2: 'EIGHTH GRADE MATH ACHIEVEMENT'
           }
         }
       })
@@ -33,19 +33,20 @@ $(function(){
         data: {version: self.version}
       })
       .then(function (resp) {
+
         if(resp.version > self.version){
           self.renderVisualization(resp.visualization);
           self.version = resp.version;
         }
 
-        console.log(resp.version);
+        console.log(resp.visualization);
       }, function (err, msg) {
         console.error(err);
       });
     };
 
     self.renderVisualization = function(visualization){
-      if(visualization.type == 'scatter'){
+      if(visualization.type == 'relationship'){
         self.makeScatter(visualization);
       }
     };
@@ -58,15 +59,15 @@ $(function(){
             zoomType: 'xy'
         },
         title: {
-            text: 'Height Versus Weight of 507 Individuals by Gender'
+            text: visualization.title
         },
         subtitle: {
-            text: 'Source: Heinz  2003'
+            text: ''
         },
         xAxis: {
             title: {
                 enabled: true,
-                text: 'Height (cm)'
+                text: visualization.stat1
             },
             startOnTick: true,
             endOnTick: true,
@@ -74,18 +75,8 @@ $(function(){
         },
         yAxis: {
             title: {
-                text: 'Weight (kg)'
+                text: visualization.stat2
             }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'left',
-            verticalAlign: 'top',
-            x: 100,
-            y: 70,
-            floating: true,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-            borderWidth: 1
         },
         plotOptions: {
             scatter: {
@@ -104,19 +95,22 @@ $(function(){
                             enabled: false
                         }
                     }
-                },
-                tooltip: {
-                    headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.x} cm, {point.y} kg'
                 }
             }
         },
         series: [{
-            name: 'Female',
-            color: 'rgba(223, 83, 83, .5)',
-            data: visualization.data
-
-        }],
+          name: 'Countries',
+          dataLabels: {
+            enabled: true,
+            formatter: function(){
+              return this.point.name
+            }
+          },
+          data: visualization.data.map(function(d){
+            //d.color = "#00FF00";
+            return d;
+          })
+        }]
     });
     }
 

@@ -1,0 +1,9 @@
+{
+  "ALCOHOL CONSUMPTION": "alcohol_consumption_per_adult",
+  "WAR CASUALTIES": "battle_deaths",
+  "FEMALE BMI": "BMI_Female",
+  "MALE BMI": "BMI_Male",
+  "FEMALE BLOOD PRESSURE": "female_blood_pressure",
+  "GDP PER CAPITA": "gdp_per_capita",
+  "EIGHTH GRADE MATH ACHIEVEMENT": "math_8th_grade"
+}
