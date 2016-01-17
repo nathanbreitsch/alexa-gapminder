@@ -61,6 +61,9 @@ function onIntent(intentRequest, session, callback) {
     if ("StatFinderIntent" === intentName) {
         findStat(intent, session, callback);
     }
+    else if("RelationshipFinderIntent" === intentName){
+      findRelationship(intent, session, callback);
+    }
     else if ("AMAZON.HelpIntent" === intentName) {
         getWelcomeResponse(callback);
     }
@@ -101,11 +104,12 @@ function getWelcomeResponse(callback) {
 function findStat(intent, session, callback){
   var country = intent.slots.Country.value;
   var stat = intent.slots.Stat.value;
-  sessionAttributes = {};
+  var sessionAttributes = {};
 
   var title = "";
   var speechOuput = "";
   var reprompt = "What's next?";
+  var quit = false;
 
   if(stat && country){
     speechOutput = "You just asked me for the " + stat + " of " + country +
@@ -124,18 +128,30 @@ function findStat(intent, session, callback){
 }
 
 
-function getRelationship(intent, session, callback){
+function findRelationship(intent, session, callback){
   var stat1 = intent.slots.FirstStat.value;
   var stat2 = intent.slots.SecondStat.value;
+  var sessionAttributes = {};
+  var reprompt = "";
+  var speechOuput = "";
+  var title = "";
+  var quit = false;
 
   if(stat1 && stat2){
     speechOutput = "You just asked me for the relationship between " + stat1 + " and " + stat2 +
       " ,but I don't have the gap minder dataset yet.  Get to work you lazy fuck! ";
     title = "Relationship between " + stat1 + " and " + stat2;
   }
+  else{
+    speechOutput = "I don't understand what the fuck you just said.";
+    title = "WTF?"
+  }
+
+  callback(
+    sessionAttributes,
+    buildSpeechletResponse(title, speechOutput, reprompt, quit)
+  );
 }
-
-
 
 
 // --------------- Helpers that build all of the responses -----------------------
